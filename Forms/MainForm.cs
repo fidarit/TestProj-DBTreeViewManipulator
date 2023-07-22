@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Serialization;
 
 namespace DBTreeView
 {
@@ -60,9 +61,28 @@ namespace DBTreeView
             }
         }
 
+        private Models.Object? GetSelectedObject(bool includeAttributes = false)
+        {
+            if (treeView.SelectedNode == null)
+                return null;
+
+            int objectId = (int)treeView.SelectedNode.Tag;
+
+            if (includeAttributes)
+                return dbContext.Objects
+                    .Include(o => o.Attributes)
+                    .FirstOrDefault(o => o.Id == objectId);
+            else
+                return dbContext.Objects
+                    .FirstOrDefault(o => o.Id == objectId);
+        }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            AddEditForm addEditForm = new AddEditForm(dbContext);
+            var obj = GetSelectedObject(true);
+
+            AddEditForm addEditForm = new AddEditForm(dbContext, obj);
+
             if (addEditForm.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
@@ -71,18 +91,11 @@ namespace DBTreeView
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (treeView.SelectedNode == null)
-                return;
-
-            int objectId = (int)treeView.SelectedNode.Tag;
-
-            var obj = dbContext.Objects
-                .FirstOrDefault(o => o.Id == objectId);
+            var obj = GetSelectedObject();
 
             if (obj != null)
             {
                 dbContext.Objects.Remove(obj);
-                dbContext.SaveChanges();
                 LoadData();
             }
         }
@@ -94,7 +107,22 @@ namespace DBTreeView
 
         private void btnExport_Click(object sender, EventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog()
+            {
+                Filter = "XML file(*.xml)|*.xml",
+                Title = "Ёкспорт в XML"
+            };
 
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var data = new Models.Serialized.SerializedData(dbContext);
+                var xmlSerializer = new XmlSerializer(typeof(Models.Serialized.SerializedData));
+
+                using (FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.OpenOrCreate))
+                {
+                    xmlSerializer.Serialize(fs, data);
+                }
+            }
         }
     }
 }

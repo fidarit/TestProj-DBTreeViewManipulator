@@ -1,23 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace DBTreeView
+﻿namespace DBTreeView
 {
     public partial class AddEditForm : Form
     {
         private readonly ApplicationContext dbContext;
-        private Models.Object? selectedObject;
+        private readonly Models.Object? selectedObject;
 
-        public AddEditForm(ApplicationContext dbContext)
+        public AddEditForm(ApplicationContext dbContext, Models.Object? selectedObject = null)
         {
             InitializeComponent();
-            this.dbContext = dbContext;
-        }
 
-        public AddEditForm(ApplicationContext dbContext, int objectId) : this(dbContext)
-        {
-            selectedObject = dbContext.Objects
-                .Include(o => o.Attributes)
-                .FirstOrDefault(o => o.Id == objectId);
+            this.dbContext = dbContext;
+            this.selectedObject = selectedObject;
 
             if (selectedObject != null)
             {
