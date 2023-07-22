@@ -21,22 +21,42 @@ namespace DBTreeView
         {
             treeView.Nodes.Clear();
 
-            var objects = dbContext.Objects
+            var links = dbContext.Links
+                .Include(o => o.Child)
+                .GroupBy(x => x.IdParent)
+                .ToDictionary(keySelector: x => x.Key, elementSelector: x => x.Select(link => link.Child).ToList());
+
+            var allChilds = links
+                .SelectMany(x => x.Value)
+                .Select(x => x.Id)
+                .ToHashSet();
+
+            var rootObjects = dbContext.Objects
+                .Where(x => allChilds.Contains(x.Id) == false)
                 .Include(o => o.Attributes)
                 .ToList();
 
-            foreach (var obj in objects)
+            var queue = new Queue<(TreeNodeCollection root, Models.Object obj)>();
+
+            foreach (var obj in rootObjects)
+                queue.Enqueue((treeView.Nodes, obj));
+
+            while (queue.Count > 0)
             {
-                TreeNode node = new TreeNode(obj.Product);
-                node.Tag = obj.Id;
+                var pair = queue.Dequeue();
+                var node = new TreeNode($"{pair.obj.Id}: {pair.obj.Product}");
+                node.Tag = pair.obj.Id;
 
-                foreach (var attribute in obj.Attributes)
+                pair.root.Add(node);
+
+                if (links.TryGetValue(pair.obj.Id, out var children))
                 {
-                    TreeNode attributeNode = new TreeNode($"{attribute.Name}: {attribute.Value}");
-                    node.Nodes.Add(attributeNode);
+                    foreach (var obj in children)
+                    {
+                        if (obj != null)
+                            queue.Enqueue((node.Nodes, obj));
+                    }
                 }
-
-                treeView.Nodes.Add(node);
             }
         }
 
@@ -57,7 +77,6 @@ namespace DBTreeView
             int objectId = (int)treeView.SelectedNode.Tag;
 
             var obj = dbContext.Objects
-                .Include(o => o.Attributes)
                 .FirstOrDefault(o => o.Id == objectId);
 
             if (obj != null)
