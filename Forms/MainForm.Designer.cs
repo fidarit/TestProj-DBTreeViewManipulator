@@ -37,6 +37,7 @@
             rightLayoutPanel = new TableLayoutPanel();
             btnEdit = new Button();
             descriptionOutput = new ListView();
+            btnEditLinks = new Button();
             bottomLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
@@ -62,7 +63,7 @@
             btnAdd.Location = new Point(8, 8);
             btnAdd.Margin = new Padding(8);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(154, 48);
+            btnAdd.Size = new Size(112, 48);
             btnAdd.TabIndex = 1;
             btnAdd.Text = "Добавить";
             btnAdd.UseVisualStyleBackColor = true;
@@ -71,10 +72,10 @@
             // btnDelete
             // 
             btnDelete.Dock = DockStyle.Fill;
-            btnDelete.Location = new Point(178, 8);
+            btnDelete.Location = new Point(136, 8);
             btnDelete.Margin = new Padding(8);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(154, 48);
+            btnDelete.Size = new Size(112, 48);
             btnDelete.TabIndex = 2;
             btnDelete.Text = "Удалить";
             btnDelete.UseVisualStyleBackColor = true;
@@ -82,13 +83,15 @@
             // 
             // bottomLayoutPanel
             // 
-            bottomLayoutPanel.ColumnCount = 3;
-            bottomLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            bottomLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            bottomLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            bottomLayoutPanel.ColumnCount = 4;
+            bottomLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            bottomLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            bottomLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            bottomLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             bottomLayoutPanel.Controls.Add(btnAdd, 0, 0);
             bottomLayoutPanel.Controls.Add(btnDelete, 1, 0);
             bottomLayoutPanel.Controls.Add(btnExport, 2, 0);
+            bottomLayoutPanel.Controls.Add(btnEditLinks, 3, 0);
             bottomLayoutPanel.Dock = DockStyle.Bottom;
             bottomLayoutPanel.Location = new Point(0, 364);
             bottomLayoutPanel.Name = "bottomLayoutPanel";
@@ -100,10 +103,10 @@
             // btnExport
             // 
             btnExport.Dock = DockStyle.Fill;
-            btnExport.Location = new Point(348, 8);
+            btnExport.Location = new Point(264, 8);
             btnExport.Margin = new Padding(8);
             btnExport.Name = "btnExport";
-            btnExport.Size = new Size(156, 48);
+            btnExport.Size = new Size(112, 48);
             btnExport.TabIndex = 4;
             btnExport.Text = "Выгрузить в XML";
             btnExport.UseVisualStyleBackColor = true;
@@ -171,6 +174,18 @@
             descriptionOutput.UseCompatibleStateImageBehavior = false;
             descriptionOutput.View = View.List;
             // 
+            // btnEditLinks
+            // 
+            btnEditLinks.Dock = DockStyle.Fill;
+            btnEditLinks.Location = new Point(392, 8);
+            btnEditLinks.Margin = new Padding(8);
+            btnEditLinks.Name = "btnEditLinks";
+            btnEditLinks.Size = new Size(112, 48);
+            btnEditLinks.TabIndex = 5;
+            btnEditLinks.Text = "Редактировать связи";
+            btnEditLinks.UseVisualStyleBackColor = true;
+            btnEditLinks.Click += btnEditLinks_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -202,5 +217,6 @@
         private Button btnEdit;
         private TableLayoutPanel rightLayoutPanel;
         private ListView descriptionOutput;
+        private Button btnEditLinks;
     }
 }

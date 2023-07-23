@@ -31,7 +31,7 @@
             btnSave = new Button();
             labelProduct = new Label();
             productInput = new TextBox();
-            dgvAttributes = new DataGridView();
+            gridView = new DataGridView();
             NameColumn = new DataGridViewTextBoxColumn();
             ValueColumn = new DataGridViewTextBoxColumn();
             btnCancel = new Button();
@@ -39,7 +39,7 @@
             typeInput = new TextBox();
             label = new Label();
             typeLabel = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvAttributes).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
             mainLayoutPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -73,18 +73,18 @@
             productInput.Size = new Size(247, 23);
             productInput.TabIndex = 2;
             // 
-            // dgvAttributes
+            // gridView
             // 
-            dgvAttributes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvAttributes.Columns.AddRange(new DataGridViewColumn[] { NameColumn, ValueColumn });
-            mainLayoutPanel.SetColumnSpan(dgvAttributes, 2);
-            dgvAttributes.Dock = DockStyle.Fill;
-            dgvAttributes.Location = new Point(12, 102);
-            dgvAttributes.Margin = new Padding(8);
-            dgvAttributes.Name = "dgvAttributes";
-            dgvAttributes.RowTemplate.Height = 25;
-            dgvAttributes.Size = new Size(490, 171);
-            dgvAttributes.TabIndex = 3;
+            gridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            gridView.Columns.AddRange(new DataGridViewColumn[] { NameColumn, ValueColumn });
+            mainLayoutPanel.SetColumnSpan(gridView, 2);
+            gridView.Dock = DockStyle.Fill;
+            gridView.Location = new Point(12, 102);
+            gridView.Margin = new Padding(8);
+            gridView.Name = "gridView";
+            gridView.RowTemplate.Height = 25;
+            gridView.Size = new Size(490, 171);
+            gridView.TabIndex = 3;
             // 
             // NameColumn
             // 
@@ -118,7 +118,7 @@
             mainLayoutPanel.Controls.Add(typeInput, 1, 0);
             mainLayoutPanel.Controls.Add(btnSave, 0, 4);
             mainLayoutPanel.Controls.Add(btnCancel, 1, 4);
-            mainLayoutPanel.Controls.Add(dgvAttributes, 0, 3);
+            mainLayoutPanel.Controls.Add(gridView, 0, 3);
             mainLayoutPanel.Controls.Add(label, 0, 2);
             mainLayoutPanel.Controls.Add(typeLabel, 0, 0);
             mainLayoutPanel.Controls.Add(labelProduct, 0, 1);
@@ -164,17 +164,17 @@
             typeLabel.TabIndex = 6;
             typeLabel.Text = "Тип: ";
             // 
-            // AddEditForm
+            // ObjectEditForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(514, 345);
             Controls.Add(mainLayoutPanel);
             MinimumSize = new Size(384, 384);
-            Name = "AddEditForm";
-            Text = "AddEditForm";
+            Name = "ObjectEditForm";
+            Text = "ObjectEditForm";
             Click += btnCancel_Click;
-            ((System.ComponentModel.ISupportInitialize)dgvAttributes).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
             mainLayoutPanel.ResumeLayout(false);
             mainLayoutPanel.PerformLayout();
             ResumeLayout(false);
@@ -185,7 +185,7 @@
         private Button btnSave;
         private Label labelProduct;
         private TextBox productInput;
-        private DataGridView dgvAttributes;
+        private DataGridView gridView;
         private Button btnCancel;
         private DataGridViewTextBoxColumn NameColumn;
         private DataGridViewTextBoxColumn ValueColumn;

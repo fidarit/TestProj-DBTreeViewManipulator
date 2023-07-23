@@ -23,9 +23,9 @@
                     {
                         Tag = attribute.Id
                     };
-                    row.CreateCells(dgvAttributes, attribute.Name, attribute.Value);
+                    row.CreateCells(gridView, attribute.Name, attribute.Value);
 
-                    dgvAttributes.Rows.Add(row);
+                    gridView.Rows.Add(row);
                 }
             }
         }
@@ -42,7 +42,7 @@
             selectedObject.Product = productInput.Text;
 
             //Удаляем лишние атрибуты
-            var allIds = dgvAttributes.Rows
+            var allIds = gridView.Rows
                 .OfType<DataGridViewRow>()
                 .Select(row => row.Tag as int?)
                 .ToHashSet();
@@ -50,7 +50,7 @@
             selectedObject.Attributes.RemoveAll(x => allIds.Contains(x.Id) == false);
 
             //Применяем новые данные
-            foreach (DataGridViewRow row in dgvAttributes.Rows)
+            foreach (DataGridViewRow row in gridView.Rows)
             {
                 var id = row.Tag as int?;
                 var name = row.Cells[0].Value?.ToString();

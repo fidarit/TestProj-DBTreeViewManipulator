@@ -113,9 +113,9 @@ namespace DBTreeView
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var addEditForm = new ObjectEditForm(dbContext);
+            var form = new ObjectEditForm(dbContext);
 
-            if (addEditForm.ShowDialog() == DialogResult.OK)
+            if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadObjectsTree();
                 LoadObjectInfo();
@@ -125,9 +125,9 @@ namespace DBTreeView
         private void btnEdit_Click(object sender, EventArgs e)
         {
             var obj = GetSelectedObject(true);
-            var addEditForm = new ObjectEditForm(dbContext, obj);
+            var form = new ObjectEditForm(dbContext, obj);
 
-            if (addEditForm.ShowDialog() == DialogResult.OK)
+            if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadObjectsTree();
                 LoadObjectInfo();
@@ -166,6 +166,17 @@ namespace DBTreeView
                 {
                     xmlSerializer.Serialize(fs, data);
                 }
+            }
+        }
+
+        private void btnEditLinks_Click(object sender, EventArgs e)
+        {
+            var form = new LinksEditForm(dbContext);
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                LoadObjectsTree();
+                LoadObjectInfo();
             }
         }
 
