@@ -125,7 +125,6 @@ namespace DBTreeView
         private void btnEdit_Click(object sender, EventArgs e)
         {
             var obj = GetSelectedObject(true);
-
             var addEditForm = new ObjectEditForm(dbContext, obj);
 
             if (addEditForm.ShowDialog() == DialogResult.OK)
@@ -142,7 +141,10 @@ namespace DBTreeView
             if (obj != null)
             {
                 dbContext.Objects.Remove(obj);
+                dbContext.SaveChanges();
                 LoadObjectsTree();
+
+                splitContainer.Panel2Collapsed = true;
             }
         }
 
@@ -150,6 +152,7 @@ namespace DBTreeView
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog()
             {
+                FileName = "backup",
                 Filter = "XML file(*.xml)|*.xml",
                 Title = "Ёкспорт в XML"
             };

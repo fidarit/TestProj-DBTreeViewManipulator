@@ -49,6 +49,7 @@
             // 
             treeView.Dock = DockStyle.Fill;
             treeView.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            treeView.Indent = 24;
             treeView.Location = new Point(0, 0);
             treeView.Name = "treeView";
             treeView.Size = new Size(512, 364);
