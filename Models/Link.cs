@@ -11,9 +11,9 @@ namespace DBTreeView.Models
         [Required] public string? LinkName { get; set; }
 
         [ForeignKey(nameof(IdParent))]
-        public Object? Parent { get; set; }
+        public Object Parent { get; set; } = null!;
 
         [ForeignKey(nameof(IdChild))]
-        public Object? Child { get; set; }
+        public Object Child { get; set; } = null!;
     }
 }

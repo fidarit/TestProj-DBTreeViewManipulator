@@ -16,6 +16,7 @@ namespace DBTreeView
         private void MainForm_Load(object sender, EventArgs e)
         {
             LoadData();
+            splitContainer.Panel2Collapsed = true;
         }
 
         private void LoadData()
@@ -34,8 +35,7 @@ namespace DBTreeView
 
             var rootObjects = dbContext.Objects
                 .Where(x => allChilds.Contains(x.Id) == false)
-                .Include(o => o.Attributes)
-                .ToList();
+                .Include(o => o.Attributes);
 
             var queue = new Queue<(TreeNodeCollection root, Models.Object obj)>();
 
@@ -84,9 +84,17 @@ namespace DBTreeView
             AddEditForm addEditForm = new AddEditForm(dbContext, obj);
 
             if (addEditForm.ShowDialog() == DialogResult.OK)
-            {
                 LoadData();
-            }
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            var obj = GetSelectedObject(true);
+
+            AddEditForm addEditForm = new AddEditForm(dbContext, obj);
+
+            if (addEditForm.ShowDialog() == DialogResult.OK)
+                LoadData();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -98,11 +106,6 @@ namespace DBTreeView
                 dbContext.Objects.Remove(obj);
                 LoadData();
             }
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            dbContext.SaveChanges();
         }
 
         private void btnExport_Click(object sender, EventArgs e)
@@ -122,6 +125,40 @@ namespace DBTreeView
                 {
                     xmlSerializer.Serialize(fs, data);
                 }
+            }
+        }
+
+        private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            descriptionOutput.Clear();
+
+            var obj = GetSelectedObject(true);
+
+            splitContainer.Panel2Collapsed = obj == null;
+
+            if (obj != null)
+            {
+                var lines = new List<string>
+                {
+                    $"ID: {obj.Id}",
+                    $"Type: {obj.Type}",
+                    $"Product: {obj.Product}",
+                };
+
+                foreach (var item in obj.Attributes)
+                    lines.Add($"{item.Name}: {item.Value}");
+
+                var links = dbContext.Links
+                    .Where(x => x.IdParent == obj.Id || x.IdChild == obj.Id)
+                    .OrderBy(x => x.IdParent)
+                    .ThenBy(x => x.IdChild)
+                    .Include(x => x.Parent)
+                    .Include(x => x.Child);
+
+                foreach (var link in links)
+                    lines.Add($"{link.Parent.Product} {link.LinkName} {link.Child.Product}");
+
+                descriptionOutput.Items.AddRange(lines.Select(x => new ListViewItem(x)).ToArray());
             }
         }
     }
